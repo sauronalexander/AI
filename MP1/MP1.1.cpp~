@@ -1,0 +1,248 @@
+//cpp for cs440
+
+#include <iostream>
+#include <fstream>
+#include <stack>
+#include <queue>
+#include <vector>
+#include <string>
+#include <cstdlib>
+#include <map>
+
+
+
+
+using namespace std;
+
+
+class Node
+{
+	public:
+	int row;
+	int col;
+	char type;
+
+	Node(int row1, int col1, char type1)
+	{
+		row = row1;
+		col = col1;
+		type = type1;
+
+	}
+	~Node(){}
+}; 
+
+int BFS(vector<vector<Node*> > & maze, int row, int col, int paci,int pacj, int endi,int endj,int & numExp)
+{
+
+	queue<Node*> q;
+	q.push(maze[paci][pacj]);
+	std::map<Node*, int> dist;
+	std::map<Node*, Node*> parent;
+	int marker[row][col];
+	dist.insert(pair<Node*,int>(maze[paci][pacj],0));
+	parent.insert(pair<Node*, Node*>(maze[paci][pacj], NULL));
+	for(int i=0; i<row; i++)
+	{
+		for(int j=0; j<col; j++)
+		{
+			marker[i][j] = 0;
+		}
+	}
+	
+	marker[paci][pacj] =1;
+	while(!q.empty() && q.front()->type!='.')
+	{
+		Node * temp = q.front();
+		q.pop();	
+		if(temp->col-1 >= 0 && marker[temp->row][temp->col-1]==0 && maze[temp->row][temp->col-1]->type!='%')
+		{
+			
+			marker[temp->row][temp->col-1] =1;
+			q.push(maze[temp->row][temp->col-1]);
+			numExp++;
+			dist.insert(pair<Node*,int>(maze[temp->row][temp->col-1],dist[temp]+1));
+			parent.insert(pair<Node*,Node*>(maze[temp->row][temp->col-1],temp));
+		}	
+		if(temp->row-1 >= 0 && marker[temp->row-1][temp->col]==0 && maze[temp->row-1][temp->col]->type!='%')
+		{
+			marker[temp->row-1][temp->col] =1;
+			q.push(maze[temp->row-1][temp->col]);
+			numExp++;
+			dist.insert(pair<Node*,int>(maze[temp->row-1][temp->col],dist[temp]+1));
+			parent.insert(pair<Node*,Node*>(maze[temp->row-1][temp->col],temp));
+		}
+
+		if(temp->row + 1 <= row && marker[temp->row + 1][temp->col]==0 && maze[temp->row+1][temp->col]->type!='%')
+		{
+			
+			marker[temp->row + 1][temp->col] =1;
+			q.push(maze[temp->row + 1][temp->col]);
+			numExp++;
+			dist.insert(pair<Node*,int>(maze[temp->row + 1][temp->col],dist[temp]+1));
+				parent.insert(pair<Node*,Node*>(maze[temp->row + 1][temp->col],temp));
+		}
+		if(temp->col + 1 <= col && marker[temp->row][temp->col + 1]==0 && maze[temp->row][temp->col + 1]->type!='%')
+		{
+			marker[temp->row][temp->col + 1] =1;
+			q.push(maze[temp->row][temp->col + 1]);
+			numExp++;
+			dist.insert(pair<Node*,int>(maze[temp->row][temp->col + 1],dist[temp]+1));
+				parent.insert(pair<Node*,Node*>(maze[temp->row][temp->col + 1],temp));
+		}		
+	}			// done BFS and proceed to path selection
+	
+
+	Node * temp1 = maze[endi][endj];
+
+	while(parent[temp1]!= NULL)
+	{
+		temp1->type = '.';
+		temp1 = parent[temp1];
+	}
+	return dist[maze[endi][endj]];	
+}
+
+
+int DFS(vector<vector<Node*> > & maze, int row, int col, int paci,int pacj, int endi,int endj,int & numExp)
+{
+
+	stack<Node*> s;
+	s.push(maze[paci][pacj]);
+	std::map<Node*, int> dist;
+	std::map<Node*, Node*> parent;
+	int marker[row][col];
+	dist.insert(pair<Node*,int>(maze[paci][pacj],0));
+	parent.insert(pair<Node*, Node*>(maze[paci][pacj], NULL));
+	for(int i=0; i<row; i++)
+	{
+		for(int j=0; j<col; j++)
+		{
+			marker[i][j] = 0;
+		}
+	}
+	
+	marker[paci][pacj] =1;
+	while(!s.empty() && s.top()->type!='.')
+	{
+		Node * temp = s.top();
+		s.pop();	
+	
+		if(temp->row-1 >= 0 && marker[temp->row-1][temp->col]==0 && maze[temp->row-1][temp->col]->type!='%')
+		{
+			marker[temp->row-1][temp->col] =1;
+			s.push(maze[temp->row-1][temp->col]);
+			numExp++;
+			dist.insert(pair<Node*,int>(maze[temp->row-1][temp->col],dist[temp]+1));
+			parent.insert(pair<Node*,Node*>(maze[temp->row-1][temp->col],temp));
+		}
+
+		if(temp->col-1 >= 0 && marker[temp->row][temp->col-1]==0 && maze[temp->row][temp->col-1]->type!='%')
+		{
+			
+			marker[temp->row][temp->col-1] =1;
+			s.push(maze[temp->row][temp->col-1]);
+			numExp++;
+			dist.insert(pair<Node*,int>(maze[temp->row][temp->col-1],dist[temp]+1));
+			parent.insert(pair<Node*,Node*>(maze[temp->row][temp->col-1],temp));
+		}
+		if(temp->row + 1 <= row && marker[temp->row + 1][temp->col]==0 && maze[temp->row+1][temp->col]->type!='%')
+		{
+			
+			marker[temp->row + 1][temp->col] =1;
+			s.push(maze[temp->row + 1][temp->col]);
+			numExp++;
+			dist.insert(pair<Node*,int>(maze[temp->row + 1][temp->col],dist[temp]+1));
+				parent.insert(pair<Node*,Node*>(maze[temp->row + 1][temp->col],temp));
+		}
+		if(temp->col + 1 <= col && marker[temp->row][temp->col + 1]==0 && maze[temp->row][temp->col + 1]->type!='%')
+		{
+			marker[temp->row][temp->col + 1] =1;
+			s.push(maze[temp->row][temp->col + 1]);
+			numExp++;
+			dist.insert(pair<Node*,int>(maze[temp->row][temp->col + 1],dist[temp]+1));
+				parent.insert(pair<Node*,Node*>(maze[temp->row][temp->col + 1],temp));
+		}		
+	}			// done DFS and proceed to path selection
+	
+
+	Node * temp1 = maze[endi][endj];
+
+	while(parent[temp1]!= NULL)
+	{
+		temp1->type = '.';
+		temp1 = parent[temp1];
+	}
+	return dist[maze[endi][endj]];	
+}
+
+
+int main()
+{
+
+	int i=0 ,j=0;
+	int paci, pacj;
+	int endi,endj;
+	char row, col;
+	ifstream myfile("bigMaze.txt");
+	vector <string> lines;
+	if(!myfile)
+	{
+	     cout << "File does not exist." << endl;
+	}
+
+	string line;
+
+	while(getline(myfile, line))
+	{
+
+		
+		lines.push_back(line);
+		line.clear();
+	}
+	
+	row = lines.size();
+	col = lines[0].length();
+	vector<vector<Node*> > maze;
+		
+	for(int i=0; i<row; i++)
+	{
+		vector<Node*> temp;
+		for(int j=0; j<col; j++)
+		{
+			if(lines[i][j] == 'P')
+			{
+				paci = i;
+				pacj = j;
+			} 
+			if(lines[i][j] == '.')
+			{
+				endi = i;
+				endj = j;
+			}
+			Node* temp1 = new Node(i,j,lines[i][j]);
+			temp.push_back(temp1);
+		}
+		maze.push_back(temp);
+	} 
+	int numExp = 0;
+	
+	int pathCost = BFS(maze, row, col, paci, pacj, endi, endj, numExp);
+	
+	for(int i=0; i<row; i++)
+	{
+		for(int j=0; j<col;j++)
+		{
+			cout<<maze[i][j]->type;
+		}
+		cout <<endl;	
+	}
+	
+	cout<<"pathCost = "<<pathCost<<endl;
+	cout<<"Nodes expanded =" << numExp<<endl;
+
+}
+
+
+
+

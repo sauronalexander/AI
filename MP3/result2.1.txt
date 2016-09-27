@@ -1,0 +1,100 @@
+email-test:
+top twenty words for normal:
+language : 1130
+university : 906
+workshop : 360
+one : 280
+please : 278
+research : 259
+word : 240
+www : 227
+system : 184
+work : 180
+usa : 171
+v : 164
+two : 130
+topic : 120
+write : 120
+title : 103
+semantic : 97
+state : 95
+teach : 92
+web : 92
+top twenty words for spam:
+email : 1380
+s : 1207
+report : 1053
+program : 828
+send : 800
+work : 528
+web : 398
+want : 364
+remove : 316
+week : 303
+software : 286
+sell : 247
+www : 244
+win : 217
+place : 201
+within : 192
+today : 188
+world : 177
+through : 160
+tell : 152
+
+Multinomial_Naive_Bayes
+number of matched cases:253,number of unmatched cases:7
+
+Bernoulli_Naive_Bayes
+number of matched cases:252,number of unmatched cases:8
+
+
+rt-test:
+top twenty words for normal:
+movie : 290
+like : 163
+one : 143
+story : 85
+time : 75
+would : 58
+nothing : 52
+plot : 51
+script : 47
+way : 45
+something : 43
+work : 38
+without : 30
+seem : 29
+well : 29
+whole : 27
+watching : 26
+watch : 24
+think : 21
+though : 21
+top twenty words for spam:
+film : 285
+movie : 187
+one : 111
+story : 94
+way : 80
+makes : 58
+us : 58
+work : 53
+movies : 44
+well : 44
+see : 38
+tale : 36
+though : 34
+world : 30
+thriller : 27
+would : 25
+young : 25
+yet : 24
+solid : 21
+works : 21
+
+Multinomial_Naive_Bayes
+number of matched cases:757,number of unmatched cases:243
+
+Bernoulli_Naive_Bayes
+number of matched cases:750,number of unmatched cases:250

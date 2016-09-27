@@ -1,0 +1,21 @@
+#ifndef maze
+#define 
+
+#include <string>
+#include <node.h>
+
+
+class Maze
+{
+	public:
+	Maze(const std::vector< std::string >& filenames);
+	void init_Maze();
+	
+
+}
+
+
+
+
+
+#endif

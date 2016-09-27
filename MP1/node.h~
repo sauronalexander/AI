@@ -1,0 +1,20 @@
+
+#ifndef COMMON_WORDS_H
+#define COMMON_WORDS_H
+#include <string>
+
+
+class Node
+{
+	public:
+	Node(int row, int col, char type);
+	
+	private:
+	int row;
+	int col;
+	int type;
+
+}
+
+
+#endif
